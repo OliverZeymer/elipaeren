@@ -1,23 +1,30 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-export default function useAxios(url, body, method) {
+export default function useAxios(url) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
   useEffect(() => {
-    if (method === "put") axios.post(url, body)
-    else
-      axios
-        .get(url)
-        .then((res) => {
-          setTimeout(() => {
-            setData(res)
-            setLoading(false)
-          }, 700)
-        })
-        .catch((err) => {
-          setError(err)
-        })
+    if (!url) return
+    ;(async function () {
+      try {
+        const response = await axios.get(url)
+        setData(response)
+      } catch (error) {
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [url])
-  return { data, loading, error }
+  const put = async (putUrl, body, headers) => {
+    try {
+      const response = await axios.put(putUrl, body, headers)
+      setData(response.data)
+    } catch (error) {
+      setError(error)
+    }
+  }
+  return { data, loading, error, put }
 }
