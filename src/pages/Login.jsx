@@ -1,7 +1,21 @@
 import ComponentWrapper from "../components/ComponentWrapper";
 import Button from "../components/Button";
+import useConnectBridge from "../hooks/useConnectBridge";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Login() {
+  const [discoverUrl, setDiscoverUrl] = useState(null);
+  const [username, setUsername] = useState(null);
+  const { data, loading, error } = useConnectBridge(discoverUrl, username);
+
+  function connect() {
+    if (!username) {
+      console.error("Username is required");
+    }
+    setDiscoverUrl("https://pokeapi.co/api/v2/pokemon/ditto");
+  }
+
   return (
     <div className="flex flex-col">
       <ComponentWrapper
@@ -19,7 +33,11 @@ export default function Login() {
         </p>
         <p>Well done, continue.</p>
       </ComponentWrapper>
-      <Button className="bg-primary text-dark mt-2 ml-auto" text="Continue" />
+      <Button
+        className="bg-primary text-dark mt-2 ml-auto"
+        text="Connect Now"
+        onClick={() => connect()}
+      />
     </div>
   );
 }
