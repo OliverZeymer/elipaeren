@@ -1,5 +1,24 @@
-import Heading from "../components/Heading";
+import ComponentWrapper from "../components/ComponentWrapper";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Error() {
-  return <Heading>Error</Heading>;
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col max-w-[340px] w-full">
+      <ComponentWrapper
+        type="div"
+        className="bg-lighter p-7 rounded-3xl max-w-[340px] w-full"
+      >
+        <p className="font-medium text-red mb-3">Error connecting...</p>
+        <p>Please try again...</p>
+      </ComponentWrapper>
+      <Button
+        className="bg-primary text-dark mt-2 ml-auto"
+        text="Continue"
+        onClick={() => navigate("/login")}
+      />
+    </div>
+  );
 }

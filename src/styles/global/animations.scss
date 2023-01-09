@@ -1,0 +1,15 @@
+@keyframes wiggle {
+  0% {
+    transform: translateX(10px);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(-0px);
+  }
+}
+
+.wiggle {
+  animation: wiggle 0.3s ease-in-out;
+}
