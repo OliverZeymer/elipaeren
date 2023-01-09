@@ -1,8 +1,8 @@
 import Wheel from "@uiw/react-color-wheel"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import useAxios from "../hooks/useAxios"
 import hueXYBriToRgb from "../functions/hueXYBriToRgb"
-import debounce from "lodash.debounce"
+import throttle from "lodash.throttle"
 export default function ColorWheel() {
   const fetchUrl = `${import.meta.env.VITE_HUE_BRIDGE_IP}/api/${import.meta.env.VITE_HUE_USERNAME}/lights`
   const { data, loading, error, put } = useAxios(`${fetchUrl}/27`)
@@ -11,7 +11,7 @@ export default function ColorWheel() {
     if (r > 255 || g > 255 || b > 255) throw "Invalid color component"
     return ((r << 16) | (g << 8) | b).toString(16)
   }
-  const [lampColor, setLampColor] = useState("#ffffff")
+  const [lampColor, setLampColor] = useState("")
   useEffect(() => {
     if (!loading && item?.state?.on && item?.state?.xy && item?.state?.bri) {
       setLampColor(
@@ -30,11 +30,7 @@ export default function ColorWheel() {
         color={lampColor}
         onChange={(color) => {
           setLampColor(color.hex)
-          const debouncedFilter = debounce(() => {
-            put(`${fetchUrl}/27/state`, { hue: Math.round(color?.hsl?.h * 182.04), sat: Math.round(color?.hsl?.s * 254), effect: "none", on: true })
-          }, 5000)
-
-          debouncedFilter()
+          put(`${fetchUrl}/27/state`, { hue: Math.round(color?.hsl?.h * 182.04), sat: Math.round(color?.hsl?.s * 254), effect: "none", on: true })
         }}
       />
       <p>color: {lampColor}</p>

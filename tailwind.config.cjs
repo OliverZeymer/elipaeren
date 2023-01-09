@@ -8,9 +8,13 @@ module.exports = {
       colors: {
         black: colors.black,
         white: colors.white,
-        primary: "#141414",
-        secondary: "#808080",
-        additional: "#333333",
+        primary: "#00DAC6",
+        background: "#121212",
+        "background-lighter": "#1E1E1E",
+        text: "#E1E1E1",
+        purple: "#C38FFF",
+        red: "#D7654C",
+        yellow: "#CEC718",
       },
       boxShadow: {
         top: "0 -15px 20px 0px rgba(0, 0, 0, 0.1)",

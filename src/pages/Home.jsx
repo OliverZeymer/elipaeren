@@ -1,6 +1,7 @@
 import ColorWheel from "../components/ColorWheel"
 import H1 from "../components/H1"
 import Lamps from "../components/Lamps"
+import Loader from "../components/Loader"
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <H1>Home</H1>
       <Lamps />
       <ColorWheel />
+      <Loader />
     </main>
   )
 }
