@@ -1,8 +1,4 @@
-import H1 from "../components/H1"
+import Header from "../components/Header"
 export default function Home() {
-  return (
-    <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-      <H1>Home</H1>
-    </main>
-  )
+  return <Header>Home</Header>
 }
