@@ -1,8 +1,7 @@
 import Wheel from "@uiw/react-color-wheel"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useAxios from "../hooks/useAxios"
 import hueXYBriToRgb from "../functions/hueXYBriToRgb"
-import throttle from "lodash.throttle"
 export default function ColorWheel() {
   const fetchUrl = `${import.meta.env.VITE_HUE_BRIDGE_IP}/api/${import.meta.env.VITE_HUE_USERNAME}/lights`
   const { data, loading, error, put } = useAxios(`${fetchUrl}/27`)
@@ -11,7 +10,7 @@ export default function ColorWheel() {
     if (r > 255 || g > 255 || b > 255) throw "Invalid color component"
     return ((r << 16) | (g << 8) | b).toString(16)
   }
-  const [lampColor, setLampColor] = useState("")
+  const [lampColor, setLampColor] = useState("#ffffff")
   useEffect(() => {
     if (!loading && item?.state?.on && item?.state?.xy && item?.state?.bri) {
       setLampColor(
