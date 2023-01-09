@@ -1,5 +1,5 @@
-import Header from "../components/Header"
+import Heading from "../components/Heading"
 
 export default function LightPage() {
-  return <Header>LightPage</Header>
+  return <Heading>LightPage</Heading>
 }

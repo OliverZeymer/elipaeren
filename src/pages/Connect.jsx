@@ -1,5 +1,5 @@
-import Header from "../components/Header"
+import Heading from "../components/Heading"
 
 export default function Connect() {
-  return <Header>Connect</Header>
+  return <Heading>Connect</Heading>
 }
