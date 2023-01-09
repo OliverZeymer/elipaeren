@@ -1,5 +1,5 @@
-import Header from "../components/Header"
+import Heading from "../components/Heading"
 
 export default function Lights() {
-  return <Header>Lights</Header>
+  return <Heading>Lights</Heading>
 }
