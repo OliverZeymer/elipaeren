@@ -1,5 +1,5 @@
 import { Puff } from "react-loading-icons"
 
-export default function Loader() {
-  return <Puff stroke="#e1e1e1" fill="#e1e1e1" width="100" height="100" />
+export default function Loader({ color, size }) {
+  return <Puff stroke={color ? color : "white"} width={size ? size : 100} height={size ? size : 100} />
 }
