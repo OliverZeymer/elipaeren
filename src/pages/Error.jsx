@@ -1,5 +1,5 @@
-import Header from "../components/Header";
+import Heading from "../components/Heading";
 
 export default function Error() {
-  return <Header>Error</Header>;
+  return <Heading>Error</Heading>;
 }

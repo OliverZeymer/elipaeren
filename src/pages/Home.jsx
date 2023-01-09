@@ -1,4 +1,9 @@
-import Header from "../components/Header"
+import Heading from "../components/Heading"
 export default function Home() {
-  return <Header>Home</Header>
+  return (
+    <Heading bold h1>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque quasi ex architecto maxime dolore nulla deleniti eos repellat. Dolores,
+      perferendis.
+    </Heading>
+  )
 }

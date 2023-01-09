@@ -1,5 +1,5 @@
-import Header from "../components/Header";
+import Heading from "../components/Heading";
 
 export default function Login() {
-  return <Header>Log In</Header>;
+  return <Heading>Log In</Heading>;
 }

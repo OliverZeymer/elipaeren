@@ -1,5 +1,5 @@
-import Header from "../components/Header"
+import Heading from "../components/Heading"
 
 export default function RoomPage() {
-  return <Header>RoomPage</Header>
+  return <Heading>RoomPage</Heading>
 }
