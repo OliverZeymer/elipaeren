@@ -48,7 +48,6 @@ export default function useConnectBridge(url, username) {
               devicetype: "elipaeren#" + username,
             }),
           });
-          console.log(bridgeRes);
           // status code errors
           const bridgeStatus = bridgeRes.status;
           if (bridgeStatus < 200 || bridgeStatus > 299) {
