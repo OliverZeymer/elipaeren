@@ -3,6 +3,9 @@ import ComponentWrapper from "./ComponentWrapper"
 import Logo from "./Logo"
 import NavigationLink from "./NavigationLink"
 import { BsViewList, BsLightbulb, BsFillHouseFill } from "react-icons/bs"
+import TokenContext from "../contexts/TokenContext"
+import { useContext } from "react"
+import { setCookie } from "react-use-cookie"
 const navigationLinks = [
   { path: "/", name: "Home", icon: BsViewList },
   { path: "/lights", name: "Lights", icon: BsLightbulb },
@@ -10,6 +13,22 @@ const navigationLinks = [
 ]
 
 export default function Navigation() {
+  const { setToken } = useContext(TokenContext)
+
+  function logMeOut() {
+    setCookie("hueToken", "", {
+      days: 365,
+      SameSite: "Lax",
+      Secure: true,
+    })
+    setCookie("bridgeIp", "", {
+      days: 365,
+      SameSite: "Lax",
+      Secure: true,
+    })
+    setToken(null)
+  }
+
   return (
     <ComponentWrapper
       type="nav"
@@ -25,7 +44,7 @@ export default function Navigation() {
           </li>
         ))}
       </ul>
-      <Button text="Show Tutorial" className="hidden w-full sm:block bg-black text-xl !p-4 text-left" />
+      <Button text="Log out" className="hidden w-full sm:block bg-black text-xl !p-4 text-left" onClick={() => logMeOut()} />
     </ComponentWrapper>
   )
 }

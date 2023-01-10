@@ -6,12 +6,14 @@ import { createRef, useEffect, useState, useContext } from "react";
 import InputField from "../components/InputField";
 import Loader from "../components/Loader";
 import TokenContext from "../contexts/TokenContext";
+import IpContext from "../contexts/IpContext";
 import { setCookie } from "react-use-cookie";
 
 export default function Login() {
   const navigate = useNavigate();
   const [discoverUrl, setDiscoverUrl] = useState(null);
   const { setToken: setTokenContext } = useContext(TokenContext);
+  const { setBridgeIpContext } = useContext(IpContext);
   const [username, setUsername] = useState("");
   const { token, bridgeIp, setBridgeIp, error } = useConnectBridge(
     discoverUrl,
@@ -42,6 +44,7 @@ export default function Login() {
   // if discovery is rate limited
   function useDefaultIp() {
     setBridgeIp("http://192.168.8.100");
+
     document.querySelector("button").click();
   }
 
@@ -51,7 +54,13 @@ export default function Login() {
       SameSite: "Lax",
       Secure: true,
     });
+    setCookie("bridgeIp", bridgeIp, {
+      days: 365,
+      SameSite: "Lax",
+      Secure: true,
+    });
     setTokenContext(token);
+    setBridgeIpContext(bridgeIp);
     navigate("/");
   }
 
