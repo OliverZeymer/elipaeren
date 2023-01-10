@@ -2,12 +2,16 @@ import ComponentWrapper from "../components/ComponentWrapper";
 import Button from "../components/Button";
 import useConnectBridge from "../hooks/useConnectBridge";
 import { useNavigate } from "react-router-dom";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState, useContext } from "react";
 import InputField from "../components/InputField";
 import Loader from "../components/Loader";
+import TokenContext from "../contexts/TokenContext";
+import { setCookie } from "react-use-cookie";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [discoverUrl, setDiscoverUrl] = useState(null);
+  const { setToken: setTokenContext } = useContext(TokenContext);
   const [username, setUsername] = useState("");
   const { token, bridgeIp, setBridgeIp, error } = useConnectBridge(
     discoverUrl,
@@ -41,7 +45,15 @@ export default function Login() {
     document.querySelector("button").click();
   }
 
-  if (token) console.log("%cGreat success! Token: " + token, "color: green;");
+  if (token) {
+    setCookie("hueToken", token, {
+      days: 365,
+      SameSite: "Lax",
+      Secure: true,
+    });
+    setTokenContext(token);
+    navigate("/");
+  }
 
   return (
     <div className="flex flex-col">
@@ -87,7 +99,7 @@ export default function Login() {
       {error && !bridgeIp && (
         <p
           onClick={() => useDefaultIp()}
-          className="text-center text-primary font-medium mt-4 capitalize cursor-pointer"
+          className="text-center text-primary font-medium mt-2 capitalize cursor-pointer"
         >
           Use default ip address...
         </p>
