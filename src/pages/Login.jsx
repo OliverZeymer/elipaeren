@@ -32,9 +32,7 @@ export default function Login() {
     setDiscoverUrl(null); // reset
   }, [error]);
 
-  useEffect(() => {
-    console.log("%cGreat success! Token: " + token, "color: green;");
-  }, [token]);
+  if (token) console.log("%cGreat success! Token: " + token, "color: green;");
 
   return (
     <div className="flex flex-col">
@@ -73,7 +71,7 @@ export default function Login() {
         </>
       )}
       {error && !loading && (
-        <p className="text-center text-red font-medium mt-4">
+        <p className="text-center text-red font-medium mt-4 capitalize">
           {error?.message}
         </p>
       )}
