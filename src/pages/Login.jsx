@@ -9,7 +9,10 @@ import Loader from "../components/Loader";
 export default function Login() {
   const [discoverUrl, setDiscoverUrl] = useState(null);
   const [username, setUsername] = useState("");
-  const { token, error } = useConnectBridge(discoverUrl, username);
+  const { token, bridgeIp, setBridgeIp, error } = useConnectBridge(
+    discoverUrl,
+    username
+  );
   const [loading, setLoading] = useState(false);
   const inputContainer = createRef(null);
 
@@ -31,6 +34,12 @@ export default function Login() {
     setLoading(false);
     setDiscoverUrl(null); // reset
   }, [error]);
+
+  // if discovery is rate limited
+  function useDefaultIp() {
+    setBridgeIp("http://192.168.8.100");
+    document.querySelector("button").click();
+  }
 
   if (token) console.log("%cGreat success! Token: " + token, "color: green;");
 
@@ -73,6 +82,14 @@ export default function Login() {
       {error && !loading && (
         <p className="text-center text-red font-medium mt-4 capitalize">
           {error?.message}
+        </p>
+      )}
+      {error && !bridgeIp && (
+        <p
+          onClick={() => useDefaultIp()}
+          className="text-center text-primary font-medium mt-4 capitalize cursor-pointer"
+        >
+          Use default ip address...
         </p>
       )}
     </div>
