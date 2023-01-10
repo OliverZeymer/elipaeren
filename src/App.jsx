@@ -1,35 +1,35 @@
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import Connect from "./pages/Connect";
-import ConnectLayout from "./ConnectLayout";
-import Layout from "./Layout";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Error from "./pages/Error";
-import Lights from "./pages/Lights";
-import Rooms from "./pages/Rooms";
-import RoomPage from "./pages/RoomPage";
-import LightPage from "./pages/LightPage";
-import TokenContext from "./contexts/TokenContext";
-import { useContext, useEffect, useState } from "react";
-import { getCookie } from "react-use-cookie";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom"
+import Connect from "./pages/Connect"
+import ConnectLayout from "./ConnectLayout"
+import Layout from "./Layout"
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Error from "./pages/Error"
+import Lights from "./pages/Lights"
+import Rooms from "./pages/Rooms"
+import RoomPage from "./pages/RoomPage"
+import LightPage from "./pages/LightPage"
+import TokenContext from "./contexts/TokenContext"
+import { useContext, useEffect, useState } from "react"
+import { getCookie } from "react-use-cookie"
 
 function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const tokenContext = useContext(TokenContext);
-  const [token, setToken] = useState(null);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const tokenContext = useContext(TokenContext)
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
-    const tokenCookie = getCookie("hueToken");
+    const tokenCookie = getCookie("hueToken")
     if (tokenCookie) {
-      setToken(tokenCookie);
+      setToken(tokenCookie)
     }
-  }, []);
+  }, [])
 
   return (
     <TokenContext.Provider value={{ token, setToken }}>
       <Routes location={location} key={location.pathname}>
-        {!token ? (
+        {token ? (
           <Route path="/" element={<ConnectLayout />}>
             <Route index element={<Connect />} />
             <Route path="/login" element={<Login />} />
@@ -54,7 +54,7 @@ function App() {
         )}
       </Routes>
     </TokenContext.Provider>
-  );
+  )
 }
 
-export default App;
+export default App
