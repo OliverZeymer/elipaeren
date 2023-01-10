@@ -1,24 +1,28 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import { css } from "@emotion/react"
 
 export default function ComponentWrapper(props) {
-  const { type, children, className } = props;
+  const { type, children, className } = props
 
-  let element;
+  let element
 
   switch (type) {
     case "div":
-      element = <div className={className}>{children}</div>;
-      break;
+      element = <div className={className}>{children}</div>
+      break
     case "article":
-      element = <article className={className}>{children}</article>;
-      break;
+      element = <article className={className}>{children}</article>
+      break
     case "section":
-      element = <section className={className}>{children}</section>;
-      break;
+      element = <section className={className}>{children}</section>
+      break
+    case "nav":
+      element = <nav className={className}>{children}</nav>
+      break
+
     default:
-      element = null;
+      element = null
   }
 
-  return element;
+  return element
 }
