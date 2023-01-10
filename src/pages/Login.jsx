@@ -2,14 +2,21 @@ import ComponentWrapper from "../components/ComponentWrapper";
 import Button from "../components/Button";
 import useConnectBridge from "../hooks/useConnectBridge";
 import { useNavigate } from "react-router-dom";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState, useContext } from "react";
 import InputField from "../components/InputField";
 import Loader from "../components/Loader";
+import TokenContext from "../contexts/TokenContext";
+import { setCookie } from "react-use-cookie";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [discoverUrl, setDiscoverUrl] = useState(null);
+  const { setToken: setTokenContext } = useContext(TokenContext);
   const [username, setUsername] = useState("");
-  const { token, error } = useConnectBridge(discoverUrl, username);
+  const { token, bridgeIp, setBridgeIp, error } = useConnectBridge(
+    discoverUrl,
+    username
+  );
   const [loading, setLoading] = useState(false);
   const inputContainer = createRef(null);
 
@@ -32,7 +39,21 @@ export default function Login() {
     setDiscoverUrl(null); // reset
   }, [error]);
 
-  if (token) console.log("%cGreat success! Token: " + token, "color: green;");
+  // if discovery is rate limited
+  function useDefaultIp() {
+    setBridgeIp("http://192.168.8.100");
+    document.querySelector("button").click();
+  }
+
+  if (token) {
+    setCookie("hueToken", token, {
+      days: 365,
+      SameSite: "Lax",
+      Secure: true,
+    });
+    setTokenContext(token);
+    navigate("/");
+  }
 
   return (
     <div className="flex flex-col">
@@ -73,6 +94,14 @@ export default function Login() {
       {error && !loading && (
         <p className="text-center text-red font-medium mt-4 capitalize">
           {error?.message}
+        </p>
+      )}
+      {error && !bridgeIp && (
+        <p
+          onClick={() => useDefaultIp()}
+          className="text-center text-primary font-medium mt-2 capitalize cursor-pointer"
+        >
+          Use default ip address...
         </p>
       )}
     </div>

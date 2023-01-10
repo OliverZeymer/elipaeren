@@ -9,6 +9,7 @@ function sleep(ms) {
 export default function useConnectBridge(url, username) {
   const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
+  const [bridgeIp, setBridgeIp] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -16,54 +17,54 @@ export default function useConnectBridge(url, username) {
       if (url) {
         try {
           await sleep(1500);
-          /*
-          // discover bridges on network
-          const discoveryRes = await fetch("https://discovery.meethue.com");
-          const discoveryStatus = discoveryRes.status;
-          // status code errors
-          if (discoveryStatus < 200 || discoveryStatus > 299) {
-            throw new Error(discoveryRes.statusText);
+          // if no bridge ip is set, discover bridges on network
+          if (bridgeIp === null) {
+            // discover bridges on network
+            const discoveryRes = await fetch("https://discovery.meethue.com");
+            const discoveryStatus = discoveryRes.status;
+            // status code errors
+            if (discoveryStatus < 200 || discoveryStatus > 299) {
+              throw new Error(
+                "error while discovering bridges... " + discoveryStatus
+              );
+            }
+            // no bridges found
+            const discoveryJson = await discoveryRes.json();
+            if (discoveryJson.length < 1) {
+              throw new Error("no bridges found on your network...");
+            }
+            // check for bridge ip (needs to be made)
+            setBridgeIp(discoveryJson[0].internalipaddress);
           }
-          // no bridges found
-          const discoveryJson = await discoveryRes.json();
-          if (discoveryJson.length < 1) {
-            throw new Error("no bridges found on network...");
-          }
-          */
-
-          // check for bridge ip (needs to be made)
-          const bridgeIp = "http://192.168.8.100";
 
           // get client token
-          const bridges = await fetch(bridgeIp + "/api", {
+          const bridgeRes = await fetch(bridgeIp + "/api", {
             method: "POST",
             contentType: "application/json",
             body: JSON.stringify({
               devicetype: "elipaeren#" + username,
             }),
           });
+          // status code errors
+          const bridgeStatus = bridgeRes.status;
+          if (bridgeStatus < 200 || bridgeStatus > 299) {
+            throw new Error("error while communicating with bridge...");
+          }
+          // bridge errors
+          const bridgeJson = await bridgeRes.json();
+          if (bridgeJson[0].error) {
+            throw new Error("link button not pressed");
+          }
 
-          if (discoveryStatus < 200 || discoveryStatus > 299) {
-            throw new Error(discoveryRes.statusText);
-          }
-          console.log(myBridgeRes);
-          const error = myBridgeRes[0].error.description || null;
-          const token = myBridgeRes[0].success.username || null;
-          // auth errors
-          if (error) {
-            // maybe without the [0]
-            throw new Error(error);
-          }
-          // great success
-          if (token) {
-            setToken(token);
-          }
+          // auth success
+          const token = bridgeJson[0].success.username;
+          setToken(token);
         } catch (error) {
           setError(error);
         }
       }
     })();
-  }, [url, username]);
+  }, [url, username, bridgeIp]);
 
-  return { token, error };
+  return { token, bridgeIp, setBridgeIp, error };
 }
