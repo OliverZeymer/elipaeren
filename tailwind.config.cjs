@@ -14,7 +14,7 @@ module.exports = {
         grey: "#E1E1E1",
         primary: "#00DAC6",
         yellow: "#CEC718",
-        red: "#D7654C"
+        red: "#D7654C",
       },
       boxShadow: {
         top: "0 -15px 20px 0px rgba(0, 0, 0, 0.1)",
@@ -23,7 +23,7 @@ module.exports = {
         sans: ["Poppins, sans-serif", ...defaultTheme.fontFamily.sans],
       },
       gridTemplateColumns: {
-        "auto-fit": "repeat(auto-fit, minmax(250px, 1fr));",
+        "auto-fit": "repeat(auto-fit, minmax(272px, 1fr));",
         "auto-fill": "repeat(auto-fill, minmax(0, 1fr))",
       },
       gridTemplateRows: {
