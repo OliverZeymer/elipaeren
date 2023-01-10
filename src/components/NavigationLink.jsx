@@ -6,8 +6,8 @@ export default function NavigationLink({ path, children }) {
       to={path}
       className={({ isActive }) =>
         isActive
-          ? "flex text-xl w-full rounded-2xl p-4 bg-primary text-black font-semibold"
-          : "flex text-xl w-full rounded-2xl p-4 bg-black text-white font-medium"
+          ? "flex text-xl w-full rounded-2xl sm:p-4 text-primary  sm:bg-primary sm:text-black font-semibold"
+          : "flex text-xl w-full rounded-2xl sm:p-4 sm:bg-black text-white font-medium"
       }>
       {children}
     </NavLink>
