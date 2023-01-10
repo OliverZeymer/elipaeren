@@ -34,7 +34,10 @@ export default function useConnectBridge(url, username) {
               throw new Error("no bridges found on your network...");
             }
             // check for bridge ip (needs to be made)
-            setBridgeIp(discoveryJson[0].internalipaddress);
+            setBridgeIp(
+              "http://" +
+                discoveryJson[discoveryJson.length - 1].internalipaddress
+            );
           }
 
           // get client token
@@ -45,6 +48,7 @@ export default function useConnectBridge(url, username) {
               devicetype: "elipaeren#" + username,
             }),
           });
+          console.log(bridgeRes);
           // status code errors
           const bridgeStatus = bridgeRes.status;
           if (bridgeStatus < 200 || bridgeStatus > 299) {
