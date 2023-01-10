@@ -1,5 +1,5 @@
-import Heading from "../components/Heading"
+import AllRooms from "../components/AllRooms"
 
 export default function Rooms() {
-  return <Heading>Rooms</Heading>
+  return <AllRooms />
 }
