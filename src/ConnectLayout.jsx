@@ -1,8 +1,8 @@
-import { Outlet } from "react-router-dom";
-import Logo from "./components/Logo";
+import { Outlet } from "react-router-dom"
+import Logo from "./components/Logo"
 
 export default function ConnectLayout(props) {
-  const { children } = props;
+  const { children } = props
   return (
     <div className="max-w-5xl h-full min-h-screen mx-auto p-4 flex">
       <main className="w-full max-w-[340px] mx-auto my-auto flex flex-col items-center">
@@ -11,5 +11,5 @@ export default function ConnectLayout(props) {
         <Outlet />
       </main>
     </div>
-  );
+  )
 }
