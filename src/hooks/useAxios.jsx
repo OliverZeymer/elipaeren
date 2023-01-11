@@ -4,24 +4,22 @@ export default function useAxios(url) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
   useEffect(() => {
     if (!url) return
     ;(async function () {
       try {
         const response = await axios.get(url)
-        setData(response)
+        setData(response.data)
       } catch (error) {
         setError(error)
       } finally {
         setLoading(false)
       }
     })()
-  }, [url])
-  const put = async (putUrl, body, headers) => {
+  }, [])
+  const put = async (putUrl, body) => {
     try {
-      const response = await axios.put(putUrl, body, headers)
-      setData(response.data)
+      await axios.put(putUrl, body)
     } catch (error) {
       setError(error)
     }

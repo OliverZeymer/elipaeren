@@ -5,7 +5,7 @@ import hueXYBriToRgb from "../functions/hueXYBriToRgb"
 export default function ColorWheel() {
   const fetchUrl = `${import.meta.env.VITE_HUE_BRIDGE_IP}/api/${import.meta.env.VITE_HUE_USERNAME}/lights`
   const { data, loading, error, put } = useAxios(`${fetchUrl}/27`)
-  const item = data?.data
+  const item = data
   function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255) throw "Invalid color component"
     return ((r << 16) | (g << 8) | b).toString(16)
