@@ -10,12 +10,26 @@ import filterKeysToArray from "../functions/filterKeysToArray";
 import Loader from "../components/Loader";
 import AllLights from "../components/AllLights";
 import ComponentWrapper from "../components/ComponentWrapper";
+import useFetch from "../hooks/useFetch";
 
 export default function Lights() {
   const { bridgeIpContext } = useContext(IpContext);
   const { token } = useContext(TokenContext);
   const fetchUrl = `${bridgeIpContext}/api/${token}/lights`;
   const { data, error, loading } = useAxios(fetchUrl);
+
+  const {
+    data: groups,
+    error: groupsError,
+    loading: groupsLoading,
+  } = useFetch({
+    url: "https://jsonplaceholder.typicode.com/todos/",
+  });
+
+  console.log(groups);
+  console.log(groupsError);
+  console.log(groupsLoading);
+
   return (
     <ComponentWrapper
       type="section"
