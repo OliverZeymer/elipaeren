@@ -2,7 +2,8 @@ import Wheel from "@uiw/react-color-wheel"
 import { useContext, useEffect, useState } from "react"
 import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
-import useAxios from "../hooks/useAxios"
+import useFetch from "../hooks/useFetch"
+import normalFetch from "../functions/normalFetch"
 import hueXyBriToRgb from "../functions/hueXYBriToRgb"
 
 export default function ColorPicker() {
@@ -10,8 +11,7 @@ export default function ColorPicker() {
   const { token } = useContext(TokenContext)
   const putUrl = `${bridgeIpContext}/api/${token}/lights/32/state`
   const fetchUrl = `${bridgeIpContext}/api/${token}/lights/32`
-  const { put } = useAxios(putUrl)
-  const { data, loading } = useAxios(fetchUrl)
+  const { data, loading } = useFetch({ url: fetchUrl })
   const [hex, setHex] = useState("#fff")
 
   function rgbToHex(r, g, b) {
@@ -32,22 +32,20 @@ export default function ColorPicker() {
     }
   }, [data])
 
-  return (
-    <Wheel
-      color={hex}
-      width={256}
-      height={256}
-      className=""
-      onChange={(color) => {
-        console.log(color.hsl.h)
-        setHex(color.hex)
-        put(putUrl, {
-          on: true,
-          colormode: "hs",
-          hue: Math.round(color.hsv.h * 182.04),
-          sat: Math.round(color.hsv.s * 254),
-        })
-      }}
-    />
-  )
+  function handleChange(color) {
+    setHex(color.hex)
+    const bodyObject = {
+      on: true,
+      colormode: "hs",
+      hue: Math.round(color.hsv.h * 182.04),
+      sat: Math.round(color.hsv.s * 254),
+    }
+    normalFetch({
+      url: putUrl,
+      method: "PUT",
+      body: JSON.stringify(bodyObject),
+    })
+  }
+
+  return <Wheel width={256} height={256} color={hex} onChange={(color) => handleChange(color)} />
 }
