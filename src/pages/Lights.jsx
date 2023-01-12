@@ -12,21 +12,7 @@ import AllLights from "../components/AllLights"
 import ComponentWrapper from "../components/ComponentWrapper"
 import ColorPicker from "../components/ColorPicker"
 import BrightnessSlider from "../components/BrightnessSlider"
-import Heading from "../components/Heading"
-import ScrollContainer from "../components/ScrollContainer"
-import Tag from "../components/Tag"
-import Light from "../components/Light"
-import { useContext } from "react"
 import useFetch from "../hooks/useFetch"
-import IpContext from "../contexts/IpContext"
-import TokenContext from "../contexts/TokenContext"
-import filterKeysToArray from "../functions/filterKeysToArray"
-import Loader from "../components/Loader"
-import AllLights from "../components/AllLights"
-import ComponentWrapper from "../components/ComponentWrapper"
-import ColorPicker from "../components/ColorPicker"
-import BrightnessSlider from "../components/BrightnessSlider"
-
 export default function Lights() {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)

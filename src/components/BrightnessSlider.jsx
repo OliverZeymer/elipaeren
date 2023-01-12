@@ -4,14 +4,14 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useEffect } from "react"
 import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
-import useAxios from "../hooks/useAxios"
+import normalFetch from "../functions/normalFetch"
+import useFetch from "../hooks/useFetch"
 export default function BrightnessSlider() {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)
   const putUrl = `${bridgeIpContext}/api/${token}/lights/32/state`
   const fetchUrl = `${bridgeIpContext}/api/${token}/lights/32`
-  const { put } = useAxios(putUrl)
-  const { data, loading } = useAxios(fetchUrl)
+  const { data, loading, error } = useFetch({ url: fetchUrl })
   const [isOpen, setIsOpen] = useState(true)
   const [startOffset, setStartOffset] = useState(0)
   const [current, setCurrent] = useState(0)
@@ -132,7 +132,11 @@ export default function BrightnessSlider() {
                 onDragEnd={(e, info) => {
                   setCurrent(startOffset - info.offset.y / 280)
                   setStretch(1)
-                  put(putUrl, { bri: Math.round(current * 254) })
+                  normalFetch({
+                    method: "PUT",
+                    url: putUrl,
+                    body: JSON.stringify({ bri: Math.round(current * 254) }),
+                  })
                 }}
               />
               <motion.div
