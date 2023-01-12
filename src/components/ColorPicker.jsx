@@ -34,8 +34,10 @@ export default function ColorPicker() {
 
   return (
     <Wheel
-      style={{ marginLeft: 20 }}
       color={hex}
+      width={256}
+      height={256}
+      className=""
       onChange={(color) => {
         console.log(color.hsl.h)
         setHex(color.hex)

@@ -11,6 +11,7 @@ import Loader from "../components/Loader"
 import AllLights from "../components/AllLights"
 import ComponentWrapper from "../components/ComponentWrapper"
 import ColorPicker from "../components/ColorPicker"
+import BrightnessSlider from "../components/BrightnessSlider"
 
 export default function Lights() {
   const { bridgeIpContext } = useContext(IpContext)
@@ -30,7 +31,10 @@ export default function Lights() {
             <Tag text="Add to new room" className="bg-grey" />
           </ScrollContainer>
           <AllLights results={results} loading={loading} />
-          <ColorPicker />
+          <ComponentWrapper type="div" className="flex items-center gap-12">
+            <ColorPicker />
+            <BrightnessSlider />
+          </ComponentWrapper>
         </>
       ) : (
         <Loader />

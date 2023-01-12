@@ -5,3 +5,14 @@ body {
   scroll-behavior: smooth;
   box-sizing: border-box;
 }
+
+@media screen and (max-width: 700px) {
+  .w-color-interactive {
+    width: 200px !important
+  ;
+    height: 200px !important;
+  }
+  .volume {
+    height: 200px !important;
+  }
+}
