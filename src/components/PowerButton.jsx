@@ -1,18 +1,30 @@
-import { BsPower } from "react-icons/bs"
-import useAxios from "../hooks/useAxios"
+import { BsPower } from "react-icons/bs";
+import { useContext } from "react";
+import IpContext from "../contexts/IpContext";
+import TokenContext from "../contexts/TokenContext";
+import normalFetch from "../functions/normalFetch";
+
 export default function PowerButton({ id, type, setIsOn, isOn }) {
-  const fetchUrl = `${import.meta.env.VITE_HUE_BRIDGE_IP}/api/${import.meta.env.VITE_HUE_USERNAME}/${type === "room" ? "groups" : "lights"}/${id}/${
-    type === "room" ? "action" : "state"
-  }`
-  const { put } = useAxios(fetchUrl)
+  const { bridgeIpContext } = useContext(IpContext);
+  const { token } = useContext(TokenContext);
+
+  const baseUrl = `${bridgeIpContext}/api/${token}/`;
+  const typeUrl = type === "room" ? "groups" : "lights";
+  const stateUrl = type === "room" ? "action" : "state";
+  const fetchUrl = `${baseUrl}${typeUrl}/${id}/${stateUrl}`;
+
+  function handleClick() {
+    normalFetch({
+      url: fetchUrl,
+      method: "PUT",
+      body: JSON.stringify({ on: !isOn }),
+    });
+    setIsOn((prevState) => !prevState);
+  }
+
   return (
-    <button
-      onClick={() => {
-        setIsOn(!isOn)
-        put(fetchUrl, { on: isOn ? false : true })
-      }}
-      className="text-3xl ml-auto">
+    <button onClick={() => handleClick()} className="text-3xl ml-auto">
       <BsPower />
     </button>
-  )
+  );
 }

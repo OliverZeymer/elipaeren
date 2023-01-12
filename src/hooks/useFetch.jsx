@@ -4,17 +4,18 @@ import { useEffect, useState } from "react";
 
 export default function useFetch({ url, method, headers, body }) {
   // states that will be returned as object
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!url) return;
     // IIFE for using async/await
     (async () => {
       try {
         const res = await fetch(url, {
-          method: method || "GET",
-          headers: headers || {},
+          method: method ? method : "GET",
+          headers: headers ? headers : { "Content-Type": "application/json" },
           body: body || null,
         });
 
