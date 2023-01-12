@@ -13,6 +13,7 @@ import TokenContext from "./contexts/TokenContext";
 import IpContext from "./contexts/IpContext";
 import { useContext, useEffect, useState } from "react";
 import { getCookie } from "react-use-cookie";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const location = useLocation();
@@ -33,33 +34,35 @@ function App() {
   return (
     <TokenContext.Provider value={{ token, setToken }}>
       <IpContext.Provider value={{ bridgeIpContext, setBridgeIpContext }}>
-        <Routes location={location} key={location.pathname}>
-          {!token ? (
-            <Route path="/" element={<ConnectLayout />}>
-              <Route index element={<Connect />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<Error />} />
-            </Route>
-          ) : (
-            <>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="/lights" element={<Lights />} />
-                <Route path="/rooms" element={<Rooms />} />
-                <Route path="/room/:roomId" element={<RoomPage />} />
-                <Route path="/light/:lightId" element={<LightPage />} />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            {!token ? (
+              <Route path="/" element={<ConnectLayout />}>
+                <Route index element={<Connect />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<Error />} />
               </Route>
-              <Route
-                path="*"
-                element={
-                  <ConnectLayout>
-                    <Error />
-                  </ConnectLayout>
-                }
-              />
-            </>
-          )}
-        </Routes>
+            ) : (
+              <>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="/lights" element={<Lights />} />
+                  <Route path="/rooms" element={<Rooms />} />
+                  <Route path="/room/:roomId" element={<RoomPage />} />
+                  <Route path="/light/:lightId" element={<LightPage />} />
+                </Route>
+                <Route
+                  path="*"
+                  element={
+                    <ConnectLayout>
+                      <Error />
+                    </ConnectLayout>
+                  }
+                />
+              </>
+            )}
+          </Routes>
+        </AnimatePresence>
       </IpContext.Provider>
     </TokenContext.Provider>
   );

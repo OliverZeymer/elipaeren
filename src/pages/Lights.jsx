@@ -10,7 +10,8 @@ import Loader from "../components/Loader";
 import AllLights from "../components/AllLights";
 import ComponentWrapper from "../components/ComponentWrapper";
 import ColorPicker from "../components/ColorPicker";
-import useSelectedLights from "../hooks/useSelectedLights";
+import useSelected from "../hooks/useSelected";
+import BrightnessSlider from "../components/BrightnessSlider";
 
 export default function Lights() {
   // context
@@ -23,7 +24,7 @@ export default function Lights() {
   const results = filterKeysToArray(data);
 
   // selected lights in array & handler to add or remove id's
-  const { selectedLights, handleSelect } = useSelectedLights();
+  const { selected, handleSelect } = useSelected();
 
   return (
     <ComponentWrapper
@@ -38,7 +39,7 @@ export default function Lights() {
           <ScrollContainer className="flex gap-1 w-full max-w-full">
             <Tag text="All lights on" className="bg-red" />
             <Tag text="All lights off" className="bg-primary" />
-            {selectedLights.length > 0 && (
+            {selected.length > 0 && (
               <>
                 <Tag text="Add to room" className="bg-grey" />
                 <Tag text="Add to new room" className="bg-grey" />
@@ -46,12 +47,17 @@ export default function Lights() {
             )}
           </ScrollContainer>
           <AllLights
-            selectedLights={selectedLights}
+            selectedLights={selected}
             handleSelect={handleSelect}
             results={results}
             loading={loading}
           />
-          {selectedLights.length > 0 && <ColorPicker />}
+          {selected.length > 0 && (
+            <div className="flex gap-6">
+              <ColorPicker />
+              <BrightnessSlider />
+            </div>
+          )}
         </>
       ) : (
         <Loader />

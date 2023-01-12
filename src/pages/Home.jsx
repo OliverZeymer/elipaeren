@@ -43,13 +43,15 @@ export default function Home() {
       return "Good evening";
     }
   }
+
   const greeting = getTimeOfDay();
+
   return (
     <div className="flex flex-col justify-center h-full">
       <Heading h1 className="my-8 text-center sm:text-left">
         {greeting},{" "}
         <span className="text-primary">
-          {currentUser ? currentUser : "user"}
+          {currentUser ? currentUser[0].split("#")[1] : "user"}
         </span>
       </Heading>
       <div className="flex flex-col gap-12">
