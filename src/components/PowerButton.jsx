@@ -8,7 +8,7 @@ export default function PowerButton({ id, type, setIsOn, isOn }) {
   return (
     <button
       onClick={() => {
-        setIsOn(isOn ? false : true)
+        setIsOn(!isOn)
         put(fetchUrl, { on: isOn ? false : true })
       }}
       className="text-3xl ml-auto">
