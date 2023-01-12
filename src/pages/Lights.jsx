@@ -23,12 +23,13 @@ export default function Lights() {
       {!loading ? (
         <>
           <Heading>Lights ({!loading && Object.keys(data).length})</Heading>
-          {/* <ScrollContainer className="">
+          <ScrollContainer className="">
             <Tag text="All lights on" className="bg-red" />
             <Tag text="All lights off" className="bg-primary" />
             <Tag text="Add to room" className="bg-grey" />
             <Tag text="Add to new room" className="bg-grey" />
-          </ScrollContainer> */}
+          </ScrollContainer>{" "}
+          */}
           <AllLights results={results} loading={loading} />
           <ColorPicker />
         </>
