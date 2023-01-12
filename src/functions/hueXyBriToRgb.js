@@ -1,4 +1,4 @@
-export default function hueXYBriToRgb(x, y, bri) {
+export default function hueXyBriToRgb(x, y, bri) {
   let z = 1.0 - x - y
   let Y = bri / 255.0 // Brightness of lamp
   let X = (Y / y) * x

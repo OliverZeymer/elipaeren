@@ -10,8 +10,8 @@ export default function Room({ room }) {
       type="article"
       className={
         isOn
-          ? "bg-lighter text-grey rounded-3xl p-6 flex items-center min-w-fit border border-yellow"
-          : "bg-lighter text-grey rounded-3xl p-6 flex items-center min-w-fit border border-transparent"
+          ? "bg-dark text-grey rounded-3xl p-6 flex items-center min-w-fit border border-yellow"
+          : "bg-dark text-grey rounded-3xl p-6 flex items-center min-w-fit border border-transparent"
       }>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2 items-center ">
