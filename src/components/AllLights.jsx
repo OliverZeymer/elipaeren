@@ -1,17 +1,7 @@
-import { useContext } from "react"
-import IpContext from "../contexts/IpContext"
-import TokenContext from "../contexts/TokenContext"
-import filterKeysToArray from "../functions/filterKeysToArray"
-import useAxios from "../hooks/useAxios"
 import Light from "./Light"
 import Loader from "./Loader"
 
-export default function AllLights() {
-  const { bridgeIpContext } = useContext(IpContext)
-  const { token } = useContext(TokenContext)
-  const fetchUrl = `${bridgeIpContext}/api/${token}/lights`
-  const { data, error, loading } = useAxios(fetchUrl)
-  const results = filterKeysToArray(data)
+export default function AllLights({ results, loading }) {
   return (
     <>
       {!loading ? (
