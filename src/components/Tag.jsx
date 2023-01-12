@@ -7,7 +7,7 @@ export default function Tag({ children, className, text }) {
     <ComponentWrapper
       type="div"
       className={
-        "px-5 py-[5px] rounded-3xl text-dark w-fit cursor-pointer " + className
+        "px-5 py-2 rounded-3xl text-dark w-fit cursor-pointer " + className
       }
     >
       <p className="whitespace-nowrap">{text}</p>

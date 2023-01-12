@@ -24,7 +24,7 @@ export default function PowerButton({ id, type, setIsOn, isOn }) {
 
   return (
     <button onClick={() => handleClick()} className="text-3xl ml-auto">
-      <BsPower />
+      <BsPower className="pointer-events-none" />
     </button>
   );
 }
