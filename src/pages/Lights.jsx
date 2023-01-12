@@ -22,14 +22,13 @@ export default function Lights() {
     <ComponentWrapper type="section" className="w-full flex flex-col justify-center gap-6 h-full">
       {!loading ? (
         <>
-          <Heading>Lights ({!loading && Object.keys(data).length})</Heading>
+          <Heading className="mt-8">Lights ({!loading && Object.keys(data).length})</Heading>
           <ScrollContainer className="">
             <Tag text="All lights on" className="bg-red" />
             <Tag text="All lights off" className="bg-primary" />
             <Tag text="Add to room" className="bg-grey" />
             <Tag text="Add to new room" className="bg-grey" />
-          </ScrollContainer>{" "}
-          */}
+          </ScrollContainer>
           <AllLights results={results} loading={loading} />
           <ColorPicker />
         </>
