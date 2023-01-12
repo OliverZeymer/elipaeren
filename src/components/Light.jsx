@@ -22,8 +22,8 @@ export default function Light({ text, selected, id, light }) {
       type="article"
       className={
         isOn
-          ? "bg-lighter text-grey rounded-3xl p-6 flex items-center min-w-fit border border-yellow"
-          : "bg-lighter text-grey rounded-3xl p-6 flex items-center min-w-fit border border-transparent"
+          ? "bg-dark text-grey rounded-3xl p-6 flex items-center min-w-fit border border-yellow"
+          : "bg-dark text-grey rounded-3xl p-6 flex items-center min-w-fit border border-transparent"
       }>
       {!isOn ? <BsLightbulbOffFill className="text-2xl" /> : null}
       {isOn ? <BsLightbulbFill className="text-2xl text-yellow" /> : null}

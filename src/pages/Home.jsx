@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import ComponentWrapper from "../components/ComponentWrapper"
 import Heading from "../components/Heading"
 import Light from "../components/Light"
@@ -17,22 +17,31 @@ export default function Home() {
   const { data: lightsData, loading: lightsLoading } = useAxios(fetchLightsUrl)
   const { data: roomsData, loading: roomsLoading } = useAxios(fetchRoomsUrl)
   const { data: userData, loading: userLoading } = useAxios(fetchUserUrl)
-  const [username, setUsername] = useState("")
   const lightsResults = filterKeysToArray(lightsData)
   const roomsResults = filterKeysToArray(roomsData)
   const limitedLights = lightsResults?.slice(0, 6)
   const limitedRooms = roomsResults?.slice(0, 6)
-
   const currentUser =
     userData &&
     Object.keys(userData.whitelist)
       .filter((user) => user === token)
       .map((user) => userData.whitelist[user].name)
-  console.log(currentUser)
+  function getTimeOfDay() {
+    const date = new Date()
+    const hours = date.getHours()
+    if (hours < 12) {
+      return "Good morning"
+    } else if (hours >= 12 && hours <= 17) {
+      return "Good afternoon"
+    } else {
+      return "Good evening"
+    }
+  }
+  const greeting = getTimeOfDay()
   return (
     <div className="flex flex-col justify-center h-full">
-      <Heading h1 className="mb-24">
-        Good Afternoon, <span className="text-primary">{currentUser ? currentUser : "..."}</span>
+      <Heading h1 className="my-8 text-center sm:text-left">
+        {greeting}, <span className="text-primary">{currentUser ? currentUser : "user"}</span>
       </Heading>
       <div className="flex flex-col gap-12">
         {!lightsLoading && !roomsLoading ? (

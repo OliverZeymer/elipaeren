@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
+    "@uiw/react-color": "^1.1.1",
     "@uiw/react-color-wheel": "^1.1.1",
     "axios": "^1.2.2",
+    "cie-rgb-color-converter": "^1.0.6",
     "framer-motion": "^8.1.8",
     "hamburger-react": "^2.5.0",
     "philips-hue": "^1.2.0",
