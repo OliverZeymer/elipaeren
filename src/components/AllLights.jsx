@@ -1,14 +1,12 @@
 import Light from "./Light"
 import Loader from "./Loader"
-import ScrollContainer from "./ScrollContainer"
 
 export default function AllLights(props) {
-  const { results, loading, selectedLights, handleSelect } = props
-
+  const { results, loading, selectedLight, handleSelect, allLightsOn } = props
   return (
     <>
       {!loading ? (
-        <div className="sm:grid sm:grid-cols-auto-fit-small flex flex-col gap-6 w-full">
+        <div className="sm:grid sm:grid-cols-auto-fit-small flex flex-col gap-6">
           {results.map((light) => {
             return (
               <Light
@@ -16,8 +14,9 @@ export default function AllLights(props) {
                 text={"#" + light.id}
                 id={light.id}
                 light={light}
-                selected={selectedLights.includes(light.id)}
+                selected={selectedLight === light.id}
                 onPress={() => handleSelect(light.id)}
+                allLightsOn={allLightsOn}
               />
             )
           })}

@@ -6,11 +6,11 @@ import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
 import normalFetch from "../functions/normalFetch"
 import useFetch from "../hooks/useFetch"
-export default function BrightnessSlider({ selectedLights }) {
+export default function BrightnessSlider({ selectedLight }) {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)
-  const putUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}/state` : ""
-  const fetchUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}` : ""
+  const putUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}/state` : ""
+  const fetchUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}` : ""
   const { data, loading, error } = useFetch({ url: fetchUrl })
   const [isOpen, setIsOpen] = useState(true)
   const [startOffset, setStartOffset] = useState(0)

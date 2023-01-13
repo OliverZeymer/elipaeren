@@ -3,10 +3,13 @@ import { css } from "@emotion/react"
 import ComponentWrapper from "./ComponentWrapper"
 import { BsLightbulbOffFill, BsLightbulbFill } from "react-icons/bs"
 import PowerButton from "./PowerButton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-export default function Light({ text, selected, id, light, onPress }) {
+export default function Light({ text, selected, id, light, onPress, allLightsOn }) {
   const [isOn, setIsOn] = useState(light?.state?.on)
+  useEffect(() => {
+    allLightsOn === undefined ? null : setIsOn(allLightsOn)
+  }, [allLightsOn])
 
   const style = {
     selected: css`
@@ -32,7 +35,7 @@ export default function Light({ text, selected, id, light, onPress }) {
         }>
         {!isOn ? <BsLightbulbOffFill className="text-2xl" /> : null}
         {isOn ? <BsLightbulbFill className="text-2xl text-yellow" /> : null}
-        <p className="ml-3 select-none">{text}</p>
+        <p className="ml-3 text-lg select-none">{text}</p>
         <PowerButton id={id} isOn={isOn} setIsOn={setIsOn} type="light" />
       </ComponentWrapper>
     </div>

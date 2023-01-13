@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
 
-export default function Heading({ children, h2, h3, bold, className }) {
+export default function Heading({ children, h2, h3, bold, className, big }) {
   const styles = {
     h1: css`
       font-size: clamp(1.5em, -0.875rem + 8.333vw, 2.25rem);
@@ -17,11 +17,11 @@ export default function Heading({ children, h2, h3, bold, className }) {
     `,
   }
   return h2 ? (
-    <h2 css={styles.h2} className={`font-medium leading-tight text-text ` + className}>
+    <h2 css={big ? styles.h1 : styles.h2} className={`font-medium leading-tight text-text ` + className}>
       {children}
     </h2>
   ) : h3 ? (
-    <h3 css={styles.h3} className={`leading-tight text-text ` + className}>
+    <h3 css={big ? styles.h1 : styles.h3} className={`leading-tight text-text ` + className}>
       {children}
     </h3>
   ) : (

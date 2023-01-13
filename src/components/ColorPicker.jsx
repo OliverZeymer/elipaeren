@@ -1,19 +1,18 @@
 import Wheel from "@uiw/react-color-wheel"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
 import useFetch from "../hooks/useFetch"
 import normalFetch from "../functions/normalFetch"
 import hueXyBriToRgb from "../functions/hueXYBriToRgb"
 import _ from "lodash"
-export default function ColorPicker({ selectedLights }) {
+export default function ColorPicker({ selectedLight }) {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)
-  const putUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}/state` : ""
-  const fetchUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}` : ""
+  const putUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}/state` : ""
+  const fetchUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}` : ""
   const { data, loading } = useFetch({ url: fetchUrl })
   const [hex, setHex] = useState("#fff")
-  const ref = useRef(null)
   function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255) throw "Invalid color component"
     return "#" + ((r << 16) | (g << 8) | b).toString(16)
@@ -21,7 +20,6 @@ export default function ColorPicker({ selectedLights }) {
 
   useEffect(() => {
     if (!loading) {
-      console.log(data)
       setHex(
         rgbToHex(
           hueXyBriToRgb(data?.state?.xy[0], data?.state?.xy[1], data?.state?.bri).r,
@@ -35,9 +33,7 @@ export default function ColorPicker({ selectedLights }) {
   const throttledHandleChange = _.throttle(handleChange, 500)
 
   function handleChange(color) {
-    console.log(color.hsv.s)
     const bodyObject = {
-      on: true,
       colormode: "hs",
       effect: "none",
       hue: Math.round(color.hsv.h * 182.04),
