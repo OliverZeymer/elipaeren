@@ -6,11 +6,11 @@ import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
 import normalFetch from "../functions/normalFetch"
 import useFetch from "../hooks/useFetch"
-export default function BrightnessSlider() {
+export default function BrightnessSlider({ selectedLights }) {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)
-  const putUrl = `${bridgeIpContext}/api/${token}/lights/32/state`
-  const fetchUrl = `${bridgeIpContext}/api/${token}/lights/32`
+  const putUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}/state` : ""
+  const fetchUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}` : ""
   const { data, loading, error } = useFetch({ url: fetchUrl })
   const [isOpen, setIsOpen] = useState(true)
   const [startOffset, setStartOffset] = useState(0)
@@ -48,14 +48,8 @@ export default function BrightnessSlider() {
       animate={{
         width: isOpen ? 80 : 40,
         height: isOpen ? 280 : 40,
-        borderRadius: 32,
+        borderRadius: 0,
         boxShadow: isOpen ? "0 8px 24px 0 rgba(0, 0, 0, 0.15)" : "0 8px 24px 0 rgba(0, 0, 0, 0.05)",
-        transition: {
-          duration: 0.3,
-          type: "spring",
-          stiffness: 200,
-          damping: 20,
-        },
       }}
       className={`volume relative z-10`}>
       <motion.div

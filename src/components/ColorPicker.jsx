@@ -1,19 +1,19 @@
 import Wheel from "@uiw/react-color-wheel"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import IpContext from "../contexts/IpContext"
 import TokenContext from "../contexts/TokenContext"
 import useFetch from "../hooks/useFetch"
 import normalFetch from "../functions/normalFetch"
 import hueXyBriToRgb from "../functions/hueXYBriToRgb"
-
-export default function ColorPicker() {
+import _ from "lodash"
+export default function ColorPicker({ selectedLights }) {
   const { bridgeIpContext } = useContext(IpContext)
   const { token } = useContext(TokenContext)
-  const putUrl = `${bridgeIpContext}/api/${token}/lights/32/state`
-  const fetchUrl = `${bridgeIpContext}/api/${token}/lights/32`
+  const putUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}/state` : ""
+  const fetchUrl = selectedLights.length === 1 ? `${bridgeIpContext}/api/${token}/lights/${selectedLights[0]}` : ""
   const { data, loading } = useFetch({ url: fetchUrl })
   const [hex, setHex] = useState("#fff")
-
+  const ref = useRef(null)
   function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255) throw "Invalid color component"
     return "#" + ((r << 16) | (g << 8) | b).toString(16)
@@ -32,20 +32,38 @@ export default function ColorPicker() {
     }
   }, [data])
 
+  const throttledHandleChange = _.throttle(handleChange, 500)
+
   function handleChange(color) {
-    setHex(color.hex)
+    console.log(color.hsv.s)
     const bodyObject = {
       on: true,
       colormode: "hs",
+      effect: "none",
       hue: Math.round(color.hsv.h * 182.04),
-      sat: Math.round(color.hsv.s * 254),
+      sat: Math.round(color.hsv.s * 2.54),
     }
     normalFetch({
       url: putUrl,
       method: "PUT",
       body: JSON.stringify(bodyObject),
     })
+    window.addEventListener("mouseup", () => {
+      setHex(color.hex)
+    })
+    window.addEventListener("mousedown", () => {
+      setHex(color.hex)
+    })
   }
 
-  return <Wheel width={256} height={256} color={hex} onChange={(color) => handleChange(color)} />
+  return (
+    <Wheel
+      width={256}
+      height={256}
+      color={hex}
+      onChange={(color) => {
+        throttledHandleChange(color)
+      }}
+    />
+  )
 }
