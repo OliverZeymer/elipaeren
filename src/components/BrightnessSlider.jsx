@@ -1,46 +1,51 @@
-import { BsSun, BsBrightnessHighFill } from "react-icons/bs"
-import { useContext, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { useEffect } from "react"
-import IpContext from "../contexts/IpContext"
-import TokenContext from "../contexts/TokenContext"
-import normalFetch from "../functions/normalFetch"
-import useFetch from "../hooks/useFetch"
-export default function BrightnessSlider({ selectedLight }) {
-  const { bridgeIpContext } = useContext(IpContext)
-  const { token } = useContext(TokenContext)
-  const putUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}/state` : ""
-  const fetchUrl = selectedLight ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}` : ""
-  const { data, loading, error } = useFetch({ url: fetchUrl })
-  const [isOpen, setIsOpen] = useState(true)
-  const [startOffset, setStartOffset] = useState(0)
-  const [current, setCurrent] = useState(0)
-  const keys = current === 0 ? 0 : current < 0.5 ? 1 : 2
-
-  const [stretch, setStretch] = useState(1)
+import { BsSun, BsBrightnessHighFill } from "react-icons/bs";
+import { useContext, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
+import IpContext from "../contexts/IpContext";
+import TokenContext from "../contexts/TokenContext";
+import normalFetch from "../functions/normalFetch";
+import useFetch from "../hooks/useFetch";
+export default function BrightnessSlider({ selectedLight, selectedRoom }) {
+  const { bridgeIpContext } = useContext(IpContext);
+  const { token } = useContext(TokenContext);
+  const putUrl = selectedLight
+    ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}/state`
+    : `${bridgeIpContext}/api/${token}/groups/${selectedRoom}/action`;
+  const fetchUrl = selectedLight
+    ? `${bridgeIpContext}/api/${token}/lights/${selectedLight}`
+    : `${bridgeIpContext}/api/${token}/groups/${selectedRoom}`;
+  const { data, loading, error } = useFetch({ url: fetchUrl });
+  const [isOpen, setIsOpen] = useState(true);
+  const [startOffset, setStartOffset] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const keys = current === 0 ? 0 : current < 0.5 ? 1 : 2;
+  const [stretch, setStretch] = useState(1);
 
   useEffect(() => {
     // check if clicked outside component and close if so
     const handleClickOutside = (e) => {
-      if (e.target.closest(".volume")) return
-    }
-    document.addEventListener("click", handleClickOutside)
+      if (e.target.closest(".volume")) return;
+    };
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading) {
-      setCurrent(data?.state?.bri / 254)
+      setCurrent(
+        selectedLight ? data?.state?.bri / 254 : data?.action?.bri / 254
+      );
     }
-  }, [data])
+  }, [data]);
 
   if (current > 1) {
-    setCurrent(1)
+    setCurrent(1);
   }
   if (current < 0) {
-    setCurrent(0)
+    setCurrent(0);
   }
 
   return (
@@ -49,7 +54,9 @@ export default function BrightnessSlider({ selectedLight }) {
         width: isOpen ? 80 : 40,
         height: isOpen ? 280 : 40,
         borderRadius: 0,
-        boxShadow: isOpen ? "0 8px 24px 0 rgba(0, 0, 0, 0.15)" : "0 8px 24px 0 rgba(0, 0, 0, 0.05)",
+        boxShadow: isOpen
+          ? "0 8px 24px 0 rgba(0, 0, 0, 0.15)"
+          : "0 8px 24px 0 rgba(0, 0, 0, 0.05)",
       }}
       className={`volume relative z-10`}>
       <motion.div
@@ -59,7 +66,9 @@ export default function BrightnessSlider({ selectedLight }) {
           x: "-50%",
           y: "-50%",
           borderRadius: 32,
-          boxShadow: isOpen ? "0 8px 24px 0 rgba(0, 0, 0, 0.15)" : "0 8px 24px 0 rgba(0, 0, 0, 0.05)",
+          boxShadow: isOpen
+            ? "0 8px 24px 0 rgba(0, 0, 0, 0.15)"
+            : "0 8px 24px 0 rgba(0, 0, 0, 0.05)",
           transition: {
             duration: 0.3,
           },
@@ -85,7 +94,10 @@ export default function BrightnessSlider({ selectedLight }) {
             {current < 0.5 ? (
               <BsSun size={isOpen ? 32 : 24} className="transition-all" />
             ) : (
-              <BsBrightnessHighFill size={isOpen ? 32 : 24} className="transition-all" />
+              <BsBrightnessHighFill
+                size={isOpen ? 32 : 24}
+                className="transition-all"
+              />
             )}
           </motion.button>
         </AnimatePresence>
@@ -99,38 +111,38 @@ export default function BrightnessSlider({ selectedLight }) {
                 dragElastic={0.1}
                 dragMomentum={true}
                 onDragStart={(e, info) => {
-                  setStartOffset(current)
+                  setStartOffset(current);
                 }}
                 onDrag={(e, info) => {
-                  const maxStretch = 1.1
+                  const maxStretch = 1.1;
                   if (startOffset - info.offset.y / 280 < 0) {
-                    setCurrent(0)
+                    setCurrent(0);
 
                     // calculate how much under 0 the volume is
-                    const underZero = (startOffset - info.offset.y / 280) * -1
+                    const underZero = (startOffset - info.offset.y / 280) * -1;
                     // calculate how much to stretch the volume bar
-                    const stretch = 1 + underZero * maxStretch
-                    setStretch(stretch < maxStretch ? stretch : maxStretch)
+                    const stretch = 1 + underZero * maxStretch;
+                    setStretch(stretch < maxStretch ? stretch : maxStretch);
                   } else if (startOffset - info.offset.y / 280 > 1) {
-                    setCurrent(1)
+                    setCurrent(1);
                     // calculate how much over 1 the volume is
-                    const overOne = startOffset - info.offset.y / 280 - 1
+                    const overOne = startOffset - info.offset.y / 280 - 1;
                     // calculate how much to stretch the volume bar
-                    const stretch = 1 + overOne * maxStretch
-                    setStretch(stretch < maxStretch ? stretch : maxStretch)
+                    const stretch = 1 + overOne * maxStretch;
+                    setStretch(stretch < maxStretch ? stretch : maxStretch);
                   } else {
-                    setCurrent(startOffset - info.offset.y / 280)
-                    setStretch(1)
+                    setCurrent(startOffset - info.offset.y / 280);
+                    setStretch(1);
                   }
                 }}
                 onDragEnd={(e, info) => {
-                  setCurrent(startOffset - info.offset.y / 280)
-                  setStretch(1)
+                  setCurrent(startOffset - info.offset.y / 280);
+                  setStretch(1);
                   normalFetch({
                     method: "PUT",
                     url: putUrl,
                     body: JSON.stringify({ bri: Math.round(current * 254) }),
-                  })
+                  });
                 }}
               />
               <motion.div
@@ -178,5 +190,5 @@ export default function BrightnessSlider({ selectedLight }) {
         </AnimatePresence>
       </motion.div>
     </motion.div>
-  )
+  );
 }

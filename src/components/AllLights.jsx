@@ -1,8 +1,8 @@
-import Light from "./Light"
-import Loader from "./Loader"
+import Light from "./Light";
+import Loader from "./Loader";
 
 export default function AllLights(props) {
-  const { results, loading, selectedLight, handleSelect, allLightsOn } = props
+  const { results, loading, selectedLight, handleSelect, allLightsOn } = props;
   return (
     <>
       {!loading ? (
@@ -18,12 +18,12 @@ export default function AllLights(props) {
                 onPress={() => handleSelect(light.id)}
                 allLightsOn={allLightsOn}
               />
-            )
+            );
           })}
         </div>
       ) : (
         <Loader />
       )}
     </>
-  )
+  );
 }
