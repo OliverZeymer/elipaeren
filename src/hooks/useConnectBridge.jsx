@@ -29,13 +29,14 @@ export default function useConnectBridge(url, username) {
             }
             // no bridges found
             const discoveryJson = await discoveryRes.json();
+            console.log(discoveryJson)
             if (discoveryJson.length < 1) {
               throw new Error("no bridges found on your network...");
             }
             // check for bridge ip (needs to be made)
             setBridgeIp(
               "http://" +
-                discoveryJson[discoveryJson.length - 1].internalipaddress
+                discoveryJson[0].internalipaddress
             );
           }
 
